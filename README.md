@@ -2,19 +2,6 @@
 
 Provision OpenLDAP accounts in mailcow-dockerized and enable LDAP authentication through [Dovecot's LDAP integration](https://doc.dovecot.org/configuration_manual/authentication/ldap/).
 
-* [How does it work](#how-does-it-work)
-* [Usage](#usage)
-  * [Prerequisites](#prerequisites)
-  * [Setup](#setup)
-  * [LDAP Fine-tuning](#ldap-fine-tuning)
-* [Limitations](#limitations)
-  * [WebUI and EAS authentication](#webui-and-eas-authentication)
-  * [Two-way sync](#two-way-sync)
-* [Customizations and Integration support](#customizations-and-integration-support)
-* [Credits](#credits)
-
-## How does it work
-
 A python script periodically checks and creates new LDAP accounts and deactivates deleted and disabled ones with mailcow API. It also enables LDAP authentication in SOGo and dovecot.
 
 ## Usage
@@ -56,7 +43,7 @@ Make sure that RDN identifier for user accounts in OpenLDAP is set to `uid`.
 Change the following line in `./templates/dovecot/ldap/passdb.conf` to fit your LDAP setup:
 ```
 ...
-auth_bind_userdn = uid=%n,ou=People,dc=next-boss,dc=eu
+auth_bind_userdn = uid=%n,ou=People,dc=mydc,dc=myland
 ...
 ```
 Container internally uses the following configuration templates:
@@ -116,15 +103,6 @@ Users from your LDAP directory will be added (and deactivated if disabled/not fo
 External authentication (identity federation) is an enterprise feature [for mailcow](https://github.com/mailcow/mailcow-dockerized/issues/2316#issuecomment-491212921). That’s why I developed an external solution, and it is unlikely that it’ll be ever directly integrated into mailcow.
 
 I’ve created this tool because I needed it for my regular work. You are free to use it for commercial needs. Please understand that I can work on issues only if they fall within the scope of my current work interests or if I’ll have some available free time (never happened for many years). I’ll do my best to review submitted PRs ASAP, though.
-
-**You can always [contact me](mailto:lhc@next-boss.eu) to help you with the integration or for custom modifications on a paid basis. My current hourly rate (ActivityWatch tracked) is 120,-€ with 3h minimum commitment.**
-
-## Buy Me a ☕
-
-If you enjoy using this project and would like to show your support, please consider buying me a coffee ☕. As an open source developer, I rely on the support of the community to keep this project going.
-
-[:heart: Sponsor](https://github.com/sponsors/l4b4r4b4b4)
-
 
 ## Credits
 This is a fork of the [openldap-mailcow project](https://github.com/Programmierus/ldap-mailcow) with slight modifications to work with OpenLDAP out of the box.
